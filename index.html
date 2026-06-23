@@ -80,11 +80,9 @@
   .field label{display:block; font-size:11px; text-transform:uppercase; color:var(--mist); margin-bottom:6px; letter-spacing:0.5px;}
   .field input, .field textarea{width:100%; background:var(--void); border:1px solid var(--line); border-radius:var(--radius-sm); color:var(--ice); padding:12px; font-family:inherit; outline:none;}
   .field textarea{resize:vertical; min-height:75px;}
-  .field input:focus, .field textarea:focus{border-color:var(--cyan);}
 
   .toast-wrap{position:fixed; bottom:24px; right:24px; z-index:999;}
-  .toast{background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--go); border-radius:10px; padding:13px 18px; font-size:13px; color:var(--ice); box-shadow:0 10px 30px rgba(0,0,0,0.5);}
-  .toast.err{border-left-color:var(--danger);}
+  .toast{background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--go); border-radius:10px; padding:13px 18px; font-size:13px; color:var(--ice);}
 </style>
 </head>
 <body>
@@ -124,7 +122,7 @@
 
   <section id="checkoutSection">
     <div style="background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:24px;">
-      <h2 style="margin-bottom:16px; font-family:'Rajdhani'; letter-spacing:0.5px;">SECURE LOCAL CHECKOUT</h2>
+      <h2 style="margin-bottom:16px; font-family:'Rajdhani';">SECURE LOCAL CHECKOUT</h2>
       
       <div class="field"><label>Customer Identity</label><input type="text" id="custName" readonly style="opacity:0.6;"></div>
       <div class="field"><label>Contact Channel</label><input type="tel" id="custMobile" readonly style="opacity:0.6;"></div>
@@ -170,7 +168,6 @@
     document.getElementById('custSignupForm').style.display = mode === 'signup' ? '' : 'none';
   };
 
-  /* ==================== AUTH CUSTOMER EXECUTIONS ==================== */
   window.executeCustomerLogin = async function() {
     const mobile = document.getElementById('cLoginMobile').value.trim();
     const password = document.getElementById('cLoginPassword').value;
@@ -182,12 +179,12 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ mobile, password })
       });
-      const data = await response = await res.json();
+      const data = await res.json();
       if(res.ok) {
         loggedInCustomer = { name: data.name, mobile: data.mobile };
         activateShopInterface();
       } else { toast(data.error || 'Invalid credentials.', 'err'); }
-    } catch(e) { toast('Backend is waking up, wait 10s and retry!', 'err'); }
+    } catch(e) { toast('Error accessing authentication layer.', 'err'); }
   };
 
   window.executeCustomerSignup = async function() {
@@ -202,11 +199,10 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, mobile, password })
       });
-      const data = await res.json();
       if(res.ok) {
         toast('🎉 Registration success! Sign in now.');
         toggleAuthTab('login');
-      } else { toast(data.error || 'Registration conflict.', 'err'); }
+      } else { toast('Mobile registration conflict.', 'err'); }
     } catch(e) { toast('Connection issue.', 'err'); }
   };
 
@@ -226,10 +222,9 @@
       const data = await res.json();
       const catalog = document.getElementById('catalogView');
       
-      if(!data.length){ catalog.innerHTML = "<p style='grid-column:1/-1; text-align:center; color:var(--mist);'>Drops are currently refreshing. Back soon!</p>"; return; }
+      if(!data.length){ catalog.innerHTML = "<p style='grid-column:1/-1; text-align:center; color:var(--mist);'>Drops are currently refreshing.</p>"; return; }
       
       catalog.innerHTML = data.map(p => {
-        // Dynamic payload base64 rendering logic
         const renderedImg = p.img_src || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="%23171622"><rect width="100%" height="100%"/></svg>';
         return `
           <div class="prod-card">
@@ -239,7 +234,7 @@
             </div>
             <div class="prod-info">
               <div class="prod-title">${esc(p.name)}</div>
-              <div class="prod-desc">${esc(p.description || 'Dehradun Exclusive Piece')}</div>
+              <div class="prod-desc">${esc(p.description || 'Dehradun Exclusive')}</div>
               <div class="prod-meta">
                 <span class="price">₹${p.price}</span>
                 <button class="btn btn-action" onclick="initiateCheckout('${p.id}')">Buy Drop</button>
@@ -284,11 +279,11 @@
         })
       });
       if(response.ok) {
-        toast('🚀 Drop point locked! Order dispatched.');
+        toast('🚀 Drop point locked! Dispatched.');
         document.getElementById('custAddress').value = "";
         document.getElementById('checkoutSection').classList.remove('active');
-      } else { toast('Item ran out of stock parameters.', 'err'); }
-    } catch(e) { toast('Network request timeout.', 'err'); }
+      } else { toast('Item out of stock.', 'err'); }
+    } catch(e) { toast('Request timeout.', 'err'); }
   }
 
   function esc(str){ const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
