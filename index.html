@@ -48,7 +48,6 @@
   .hero h1{font-size:44px; margin-bottom:8px; letter-spacing:1px;}
   .hero p{color:var(--mist); font-size:14px;}
 
-  /* Catalog Cards Grid */
   .catalog{display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:28px; padding:0 24px; max-width:1200px; margin:0 auto;}
   .prod-card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; transition:transform 0.2s; cursor:pointer;}
   .prod-card:hover{transform:translateY(-4px); border-color:var(--cyan);}
@@ -60,11 +59,9 @@
   .card-price{font-size:20px; color:var(--cyan); font-family:'Rajdhani', sans-serif;}
   .view-tag{font-size:11px; color:var(--mist); border:1px solid rgba(255,255,255,0.1); padding:3px 6px; border-radius:4px;}
 
-  /* 🌟 PREMIUM PRODUCT DETAIL POPUP (MODAL LAYER) */
   .detail-modal{display:none; position:fixed; inset:0; background:rgba(5,5,8,0.85); backdrop-filter:blur(10px); z-index:200; align-items:center; justify-content:center; padding:20px;}
   .detail-modal.active{display:flex;}
   .detail-box{background:var(--panel-2); border:1px solid var(--line); border-radius:var(--radius); max-width:760px; width:100%; display:grid; grid-template-columns:1fr 1.2fr; overflow:hidden; position:relative; animation:scaleUp 0.3s ease;}
-  @keyframes scaleUp{from{transform:scale(0.95); opacity:0;} to{transform:scale(1); opacity:1;}}
   
   .detail-img-side{width:100%; height:100%; min-height:420px; background:var(--void); overflow:hidden; position:relative; cursor:zoom-in;}
   .detail-img-side img{width:100%; height:100%; object-fit:cover; display:block;}
@@ -77,14 +74,12 @@
   .detail-price{font-size:26px; color:var(--cyan); font-family:'Rajdhani', sans-serif; margin-bottom:16px;}
   .detail-desc{font-size:14px; color:var(--mist); line-height:1.6; margin-bottom:24px;}
   
-  /* Size Selector Framework */
   .size-label{font-size:11px; text-transform:uppercase; color:var(--mist); margin-bottom:8px; font-weight:600;}
   .size-options{display:flex; gap:10px; margin-bottom:28px;}
   .size-btn{background:var(--void); border:1px solid var(--line); color:var(--ice); width:40px; height:40px; border-radius:var(--radius-sm); font-weight:700; font-size:13px; display:flex; align-items:center; justify-content:center; transition:all 0.2s;}
   .size-btn:hover{border-color:var(--cyan);}
-  .size-btn.active{background:var(--grad-drip); color:#08060d; border-color:transparent; box-shadow:0 0 14px rgba(168,85,247,0.45);}
+  .size-btn.active{background:var(--grad-drip); color:#08060d; border-color:transparent;}
 
-  /* Lightbox/Full-screen Image viewer */
   .lightbox{display:none; position:fixed; inset:0; background:rgba(0,0,0,0.95); z-index:300; align-items:center; justify-content:center; padding:20px;}
   .lightbox.active{display:flex;}
   .lightbox img{max-width:100%; max-height:90vh; object-fit:contain; border-radius:var(--radius-sm);}
@@ -92,7 +87,6 @@
 
   #checkoutSection{max-width:540px; margin:50px auto 0; padding:0 20px; display:none;}
   #checkoutSection.active{display:block; animation:slideUp 0.35s ease;}
-  @keyframes slideUp{from{transform:translateY(15px); opacity:0;} to{transform:translateY(0); opacity:1;}}
   
   .field{margin-bottom:16px;}
   .field label{display:block; font-size:11px; text-transform:uppercase; color:var(--mist); margin-bottom:6px;}
@@ -100,15 +94,9 @@
   .field textarea{resize:vertical; min-height:75px;}
 
   .btn{border:none; border-radius:var(--radius-sm); font-weight:600; font-size:14px; padding:12px 20px;}
-  .btn-action{background:var(--grad-drip); color:#08060d; width:100%; font-size:15px; text-transform:uppercase; letter-spacing:0.5px;}
+  .btn-action{background:var(--grad-drip); color:#08060d; width:100%; font-size:15px; text-transform:uppercase;}
   .toast-wrap{position:fixed; bottom:24px; right:24px; z-index:999;}
   .toast{background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--go); border-radius:10px; padding:13px 18px; font-size:13px; color:var(--ice);}
-  
-  @media (max-width: 700px){
-    .detail-box{grid-template-columns:1fr; max-height:90vh; overflow-y:auto;}
-    .detail-img-side{min-height:300px;}
-    .detail-info-side{padding:24px;}
-  }
 </style>
 </head>
 <body>
@@ -165,17 +153,14 @@
 <div class="detail-modal" id="detailModal">
   <div class="detail-box">
     <button class="detail-close" onclick="closeProductDetails()">✕</button>
-    
-    <div class="detail-img-side" id="modalImgContainer" onclick="openLightbox()">
+    <div class="detail-img-side" onclick="openLightbox()">
       <img src="" id="detailModalImg">
       <div class="zoom-hint">Click photo to Expand 🔍</div>
     </div>
-    
     <div class="detail-info-side">
       <div class="detail-title" id="detailModalTitle">Product Name</div>
       <div class="detail-price" id="detailModalPrice">₹0</div>
       <div class="detail-desc" id="detailModalDesc">Description goes here.</div>
-      
       <div class="size-label">Select Fit Size</div>
       <div class="size-options">
         <button class="size-btn" onclick="selectSize(this, 'S')">S</button>
@@ -183,7 +168,6 @@
         <button class="size-btn" onclick="selectSize(this, 'L')">L</button>
         <button class="size-btn" onclick="selectSize(this, 'XL')">XL</button>
       </div>
-      
       <button class="btn btn-action" onclick="buyFromDetails()">Buy This Drop</button>
     </div>
   </div>
@@ -223,7 +207,7 @@
   window.executeCustomerLogin = async function() {
     const mobile = document.getElementById('cLoginMobile').value.trim();
     const password = document.getElementById('cLoginPassword').value;
-    if(!validMobile(mobile) || !password) { toast('Please enter a valid credentials grid.', 'err'); return; }
+    if(!validMobile(mobile) || !password) { toast('Please enter a valid mobile and password.', 'err'); return; }
 
     try {
       const res = await fetch(`${BACKEND_API}/auth/login`, {
@@ -247,9 +231,7 @@
 
     try {
       const res = await fetch(`${BACKEND_API}/auth/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, mobile, password })
+        method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name, mobile, password })
       });
       if(res.ok) {
         toast('🎉 Registration success! Sign in now.');
@@ -293,27 +275,20 @@
     } catch(e) { console.error(e); }
   }
 
-  /* ==================== 🌟 POPUP CARD CONTROLS ==================== */
   window.openProductDetails = function(id) {
     const product = currentProductsRaw.find(p => p.id === id);
     if(!product) return;
-
     activeProductId = id;
     document.getElementById('detailModalImg').src = product.img_src || '';
     document.getElementById('detailModalTitle').textContent = product.name;
     document.getElementById('detailModalPrice').textContent = '₹' + product.price;
-    document.getElementById('detailModalDesc').textContent = product.description || 'Dehradun Exclusive Streetwear Design.';
-    
-    // Reset sizes state variables
+    document.getElementById('detailModalDesc').textContent = product.description || 'Dehradun Exclusive.';
     activeSelectedSize = "";
     document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
-
     document.getElementById('detailModal').classList.add('active');
   };
 
-  window.closeProductDetails = function() {
-    document.getElementById('detailModal').classList.remove('active');
-  };
+  window.closeProductDetails = function() { document.getElementById('detailModal').classList.remove('active'); };
 
   window.selectSize = function(element, size) {
     document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
@@ -322,22 +297,16 @@
   };
 
   window.openLightbox = function() {
-    const currentSrc = document.getElementById('detailModalImg').src;
-    document.getElementById('lightboxTargetImg').src = currentSrc;
+    document.getElementById('lightboxTargetImg').src = document.getElementById('detailModalImg').src;
     document.getElementById('lightboxView').classList.add('active');
   };
-
-  window.closeLightbox = function() {
-    document.getElementById('lightboxView').classList.remove('active');
-  };
+  window.closeLightbox = function() { document.getElementById('lightboxView').classList.remove('active'); };
 
   window.buyFromDetails = function() {
     if(!activeSelectedSize) { toast('Please select your fit size first! 👕', 'err'); return; }
-    
     closeProductDetails();
     document.getElementById('targetProdId').textContent = activeProductId;
     document.getElementById('custSizeSelected').value = activeSelectedSize;
-    
     const checkout = document.getElementById('checkoutSection');
     checkout.classList.add('active');
     checkout.scrollIntoView({ behavior: 'smooth' });
@@ -346,24 +315,20 @@
   async function submitOrder() {
     const address = document.getElementById('custAddress').value.trim();
     if(!address) { toast('Drop destination mapping required.', 'err'); return; }
-
     try {
       const response = await fetch(`${BACKEND_API}/orders`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          product_id: activeProductId,
-          qty: 1,
-          customer_name: loggedInCustomer.name,
-          customer_mobile: loggedInCustomer.mobile,
-          address: `${address} [Size: ${activeSelectedSize}]`
+          product_id: activeProductId, qty: 1, customer_name: loggedInCustomer.name,
+          customer_mobile: loggedInCustomer.mobile, address: `${address} [Size: ${activeSelectedSize}]`
         })
       });
       if(response.ok) {
         toast('🚀 Drop point locked! Order logged.');
         document.getElementById('custAddress').value = "";
         document.getElementById('checkoutSection').classList.remove('active');
-      } else { toast('Item ran out of stock parameters.', 'err'); }
+      } else { toast('Item out of stock.', 'err'); }
     } catch(e) { toast('Request execution timeout.', 'err'); }
   }
 </script>
